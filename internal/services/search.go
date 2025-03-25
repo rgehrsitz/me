@@ -2,14 +2,13 @@ package services
 
 import (
 	"context"
-	"database/sql"
-	"encoding/json"
+
 	"fmt"
 	"math"
 	"strings"
 
-	"github.com/yourusername/pkb/internal/db"
-	"github.com/yourusername/pkb/internal/models"
+	"github.com/rgehrsitz/me/internal/db"
+	"github.com/rgehrsitz/me/internal/models"
 )
 
 // SearchService handles searching for content
@@ -55,14 +54,15 @@ func (s *SearchService) keywordSearch(query models.SearchQuery) ([]models.Search
 
 	// Add tag filters if specified
 	if len(query.Tags) > 0 {
-		sqlQuery += fmt.Sprintf(" AND c.id IN (
+		placeholders := strings.Repeat("?,", len(query.Tags)-1) + "?"
+		sqlQuery += fmt.Sprintf(` AND c.id IN (
 			SELECT ct.content_id
 			FROM content_tags ct
 			JOIN tags t ON ct.tag_id = t.id
 			WHERE t.name IN (%s)
 			GROUP BY ct.content_id
 			HAVING COUNT(DISTINCT t.name) = ?
-		)", strings.Repeat("?,", len(query.Tags)-1)+"?")
+		)`, placeholders)
 
 		for _, tag := range query.Tags {
 			args = append(args, tag)

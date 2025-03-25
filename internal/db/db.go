@@ -8,7 +8,7 @@ import (
 	"os"
 	"path/filepath"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "modernc.org/sqlite"
 )
 
 //go:embed schema.sql
@@ -28,7 +28,7 @@ func New(dbPath string) (*DB, error) {
 	}
 
 	// Open SQLite database
-	db, err := sql.Open("sqlite3", dbPath)
+	db, err := sql.Open("sqlite", dbPath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open database: %w", err)
 	}
@@ -144,7 +144,7 @@ func (db *DB) CreateContent(content *Content) (int64, error) {
 	if len(content.Tags) > 0 {
 		for _, tag := range content.Tags {
 			// Insert tag if it doesn't exist
-			res, err := tx.Exec("INSERT OR IGNORE INTO tags (name) VALUES (?)", tag)
+			_, err := tx.Exec("INSERT OR IGNORE INTO tags (name) VALUES (?)", tag)
 			if err != nil {
 				return 0, err
 			}

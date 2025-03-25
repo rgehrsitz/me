@@ -2,20 +2,13 @@ package api
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
-	"os"
-	"path/filepath"
 	"strconv"
-	"strings"
-	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/yourusername/pkb/internal/db"
-	"github.com/yourusername/pkb/internal/models"
-	"github.com/yourusername/pkb/internal/services"
+	"github.com/rgehrsitz/me/internal/db"
+	"github.com/rgehrsitz/me/internal/models"
 )
 
 // CreateContent handles the creation of new content

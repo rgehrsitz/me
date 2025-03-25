@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 
 	"github.com/joho/godotenv"
-	"github.com/yourusername/pkb/internal/api"
-	"github.com/yourusername/pkb/internal/db"
+	"github.com/rgehrsitz/me/internal/api"
+	"github.com/rgehrsitz/me/internal/db"
 )
 
 func main() {

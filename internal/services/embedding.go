@@ -7,7 +7,6 @@ import (
 	"os"
 
 	"github.com/sashabaranov/go-openai"
-	"github.com/yourusername/pkb/internal/models"
 )
 
 // EmbeddingService handles generating and storing embeddings

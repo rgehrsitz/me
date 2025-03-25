@@ -3,8 +3,8 @@ package api
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/yourusername/pkb/internal/db"
-	"github.com/yourusername/pkb/internal/services"
+	"github.com/rgehrsitz/me/internal/db"
+	"github.com/rgehrsitz/me/internal/services"
 )
 
 // Server represents the API server
@@ -50,6 +50,12 @@ func NewServer(db *db.DB, dataDir string) (*Server, error) {
 		AllowCredentials: true,
 	}))
 
+	// Serve frontend static files from the dist directory
+	// Use a more specific path to avoid conflicts with API routes
+	router.Static("/assets", "./web/dist/assets")
+	router.StaticFile("/", "./web/dist/index.html")
+	router.StaticFile("/favicon.ico", "./web/dist/favicon.ico")
+
 	// API routes
 	api := router.Group("/api")
 	{
@@ -73,9 +79,6 @@ func NewServer(db *db.DB, dataDir string) (*Server, error) {
 		api.GET("/tags", server.ListTags)
 		api.POST("/tags", server.CreateTag)
 	}
-
-	// Serve static files for the frontend
-	router.Static("/", "./web/dist")
 
 	server.router = router
 	return server, nil
